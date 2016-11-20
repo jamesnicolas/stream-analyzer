@@ -46,7 +46,7 @@ var targetClicks = $(".non").val();
 var bpm = 0;
 
 function results() {
-	bpm = ((clicks/ms)*60000)/16;
+	bpm = ((clicks/ms)*6000)/4;
 	$("#bpm").html("BPM: " + bpm);
 	$("#clicks").text("Clicks: "+ clicks);
 }
@@ -91,18 +91,15 @@ function restart() {
 
 function timer() {
 	clicks++;
-	function inc() {
-		ms++;
-	}
 	var time = 0;
 	time = setInterval(function(){
-		inc();
+		++ms;
 		$('#ms').text("ms: " + ms);
 		if (clicks >= targetClicks) {
 			clearInterval(time);
 			$('#clicker').off();
 		}
-	},1);
+	},10);
 
 }
 
