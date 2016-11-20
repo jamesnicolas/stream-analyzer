@@ -3,6 +3,7 @@ function main() {
 var buttonQueue = [];
 
 function addQueue(x) {
+	$('button-select-prompt').hide();
 	if (buttonQueue.length < 2) {
 		buttonQueue.push(x);
 		x.toggleClass('active');
@@ -27,8 +28,25 @@ $k2 = $('.k2-button');
 function mouseToggle(button) {
 	if ($.inArray(button,buttonQueue) === -1) {
 		addQueue(button);
+
 	} else {
 		removeQueue(button);
+	}
+}
+
+function keyToggle(button) {
+	if ($.inArray(button,buttonQueue) === -1) {
+		addQueue(button);
+		button.text("press key");
+		$(document).on("keydown", function(event) {
+			button.text(keyToString(event.which));
+			$(document).off();
+		});
+
+
+	} else {
+		removeQueue(button);
+
 	}
 }
 
@@ -40,6 +58,8 @@ $k1.on('click',function(){
 
 });
 $k2.on('click',function(){keyToggle($k2)});
+
+
 
 var clicks = 0;
 var targetClicks = $(".non").val();
@@ -63,20 +83,26 @@ var ms = 0;
 
 function ready() {
 	targetClicks = $(".non").val();
-	$('#clicker').on('click',function() {
-		if (clicks === 0) {
-			timer();
-		} else {
-			tap();
+	$(document).on('mousedown',function(event) {
+		if (!$(event.target).closest('#start').length) {
+			if (clicks === 0) {
+				timer();
+			} else {
+				tap();
+			}
 		}
 	});
-	$('#clicker').after("<p id='start-prompt'>The timer begins on your first tap.<br/></p>");
+
+	$('#start').after("<p id='start-prompt'>The timer begins on your first tap.<br/></p>");
 	$('#start').off();
 	$('#start').text("restart");
 	$('#start').on('click',restart);
 }
-
+var time = 0;
 function restart() {
+	$(document).off();
+	clearInterval(time);
+	time = 0;
 	$("#bpm").html("BPM: ");
 	$("#clicks").text("Clicks: ");
 	$("#ms").text("ms: ");
@@ -90,14 +116,14 @@ function restart() {
 }
 
 function timer() {
-	clicks++;
-	var time = 0;
+	tap();
+	time = 0;
 	time = setInterval(function(){
 		++ms;
 		$('#ms').text("ms: " + ms);
 		if (clicks >= targetClicks) {
 			clearInterval(time);
-			$('#clicker').off();
+			$(document).off();
 		}
 	},10);
 
