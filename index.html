@@ -6,13 +6,14 @@
 </head>
 <body>
 <h1>Stream Thing</h1>
-  <a href="https://github.com/jamesnicolas/stream-analyzer">Source on GitHub</a>
-<p>Select your buttons.</p>
-<div class="m1-button">M1</div>
-<div class="m2-button">M2</div>
-<div class="k1-button">K1</div>
+
+<p class="button-select-prompt">Select your buttons.</p>
+<div class="button-select">
+	<div class="m1-button">M1</div>
+	<div class="m2-button">M2</div>
+	<div class="k1-button">K1</div>
+	<div class="k2-button">K2</div>
 </div>
-<div class="k2-button">K2</div>
   <br/>Number of notes<br/>
   <input class="non" type="Number" name="non" value="20">
 
@@ -28,11 +29,11 @@ ms:
 
 
 <button id="start">start</button>
-<button id="clicker">clicker</button>
 <br/>
 
 
 <script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
+<script src = 'js/keytostring.js'></script>
 <script src='js/main.js'></script>
 </body>
 </html>
