@@ -1,7 +1,7 @@
 # stream-analyzer
 A tool that sees how fast you can stream in osu.
 
-Currently WIP, supports only left and right click now. The "select your buttons" does nothing.
+Currently WIP. Select buttons makes it look like you can only use two buttons, but you can use any of them.
 
 https://jamesnicolas.github.io/stream-analyzer/
 
