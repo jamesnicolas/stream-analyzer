@@ -39,6 +39,7 @@ function keyToggle(button) {
 		addQueue(button);
 		button.text("press key");
 		$(document).on("keydown", function(event) {
+			button.key = event.which;
 			button.text(keyToString(event.which));
 			$(document).off();
 		});
@@ -72,6 +73,9 @@ function results() {
 }
 
 function tap() {
+	if (clicks === 0) {
+		timer();
+	}
 	if (clicks < targetClicks) {
 		clicks++;
 		results();
@@ -80,18 +84,27 @@ function tap() {
 	}
 }
 var ms = 0;
+var k1Event = 0;
+var k2Event = 0;
 
 function ready() {
 	targetClicks = $(".non").val();
+	k1Down = $.Event( "keydown", { keyCode: $k1.key});
+	k2Down = $.Event( "keydown", { keycode: $k2.key});
 	$(document).on('mousedown',function(event) {
 		if (!$(event.target).closest('#start').length) {
-			if (clicks === 0) {
-				timer();
-			} else {
-				tap();
-			}
+			tap();
 		}
 	});
+
+	$(document).on('keydown',function(event) {
+		if (event.which === $k1.key || event.which === $k2.key) {
+			tap();
+		}
+	});
+
+
+
 
 	$('#start').after("<p id='start-prompt'>The timer begins on your first tap.<br/></p>");
 	$('#start').off();
@@ -116,7 +129,6 @@ function restart() {
 }
 
 function timer() {
-	tap();
 	time = 0;
 	time = setInterval(function(){
 		++ms;
