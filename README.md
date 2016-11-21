@@ -6,7 +6,7 @@ Currently WIP, supports only left and right click now. The "select your buttons"
 https://jamesnicolas.github.io/stream-analyzer/
 
 To do:
-- Fix keyboard
+- fix button selection (users should only be able to use two buttons)
 - Add UR
 - Add accuracy based on OD and custom BPM
 - Add blue, green, orange timing thing at the bottom of osu
