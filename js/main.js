@@ -6,17 +6,20 @@ function addQueue(x) {
 	$('button-select-prompt').hide();
 	if (buttonQueue.length < 2) {
 		buttonQueue.push(x);
+		x.valid = true;
 		x.toggleClass('active');
 	} else {
 		x.toggleClass('active');
 		buttonQueue.push(x);
 		buttonQueue[0].toggleClass('active');
+		buttonQueue[0].valid = false;
 		buttonQueue.splice(0,1);
 	}
 }
 
 function removeQueue(x) {
 	x.toggleClass('active');
+	x.valid = false;
 	buttonQueue.splice($.inArray(x,buttonQueue),1);
 }
 
@@ -24,6 +27,11 @@ $m1 = $('.m1-button');
 $m2 = $('.m2-button');
 $k1 = $('.k1-button');
 $k2 = $('.k2-button');
+
+$m1.valid = false;
+$m2.valid = false;
+$k1.valid = false;
+$k2.valid = false;
 
 function mouseToggle(button) {
 	if ($.inArray(button,buttonQueue) === -1) {
@@ -93,12 +101,15 @@ function ready() {
 	k2Down = $.Event( "keydown", { keycode: $k2.key});
 	$(document).on('mousedown',function(event) {
 		if (!$(event.target).closest('#start').length) {
-			tap();
+			if ($m1.valid && event.which === 1) {
+				tap();
+			} else if ($m2.valid && event.which == 3) {
+				tap();
+			}
 		}
 	});
-
 	$(document).on('keydown',function(event) {
-		if (event.which === $k1.key || event.which === $k2.key) {
+		if ((event.which === $k1.key && $k1.valid) || (event.which === $k2.key && $k2.valid)) {
 			tap();
 		}
 	});
