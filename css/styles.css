@@ -17,6 +17,14 @@ input {
 	width: 50%;
 }
 
+.retries {
+	display: none;
+}
+
+.start-prompt {
+	display: none;
+}
+
 .non {
 	width: 75px;
     padding: 12px 20px;

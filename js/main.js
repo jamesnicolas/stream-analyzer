@@ -86,7 +86,7 @@ function tap() {
 var ms = 0;
 var k1Event = 0;
 var k2Event = 0;
-
+var tries = 0;
 function ready() {
 	targetClicks = $(".non").val();
 	k1Down = $.Event( "keydown", { keyCode: $k1.key});
@@ -102,17 +102,18 @@ function ready() {
 			tap();
 		}
 	});
-
-
-
-
-	$('#start').after("<p id='start-prompt'>The timer begins on your first tap.<br/></p>");
+	$('.start-prompt').show();
 	$('#start').off();
 	$('#start').text("restart");
 	$('#start').on('click',restart);
 }
 var time = 0;
 function restart() {
+	tries++;
+	if (tries >= 2) {
+		$('.retries').text(""+tries+" retries and counting...");
+		$('.retries').show();
+	}
 	$(document).off();
 	clearInterval(time);
 	time = 0;
@@ -125,10 +126,10 @@ function restart() {
 	targetClicks = $('.non').val();
 	$("#start").off();
 	$("#start").text("start");
-	$("#start").on('click',ready);
+	ready();
 }
-
 function timer() {
+	$('.start-prompt').hide();
 	time = 0;
 	time = setInterval(function(){
 		++ms;
