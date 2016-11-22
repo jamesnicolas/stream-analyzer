@@ -100,8 +100,9 @@ function results() {
 	$("#bpm").html("BPM: " + bpm);
 	$("#clicks").text("Clicks: "+ clicks.length);
 	$("#UR").text("UR: " + (Math.sqrt(variance)*10));
-	$("#mean").text("Mean: "+clicks[clicks.length-1].mean);
-	$("#currdiff").text("Currdiff: "+clicks[clicks.length-1].diff);
+	$("#click-times").append(" "+clicks[clicks.length-1].since);
+	$("#time-diff").append(" "+clicks[clicks.length-1].diff);
+
 }
 
 function clickTime(a, b, c) {
