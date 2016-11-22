@@ -44,12 +44,12 @@ function mouseToggle(button) {
 
 function keyToggle(button) {
 	if ($.inArray(button,buttonQueue) === -1) {
-		addQueue(button);
 		button.text("press key");
 		$(document).on("keydown", function(event) {
 			button.key = event.which;
 			button.text(keyToString(event.which));
 			$(document).off();
+			addQueue(button);
 		});
 
 
@@ -70,22 +70,59 @@ $k2.on('click',function(){keyToggle($k2)});
 
 
 
-var clicks = 0;
+var clicks = [];
 var targetClicks = $(".non").val();
 var bpm = 0;
+var variance = 0;
+var startTime = 0;
+
+function sqr(x) {
+	return Math.pow(x,2);
+}
 
 function results() {
-	bpm = ((clicks/ms)*6000)/4;
+	if (clicks.length > 1) {
+	clicks[clicks.length-1].mean = (clicks[clicks.length-2].mean*(clicks.length-2)
+	+ clicks[clicks.length-1].diff)/(clicks.length-1);
+
+	var curr_mean = clicks[clicks.length-1].mean;
+	var old_mean = clicks[clicks.length-2].mean;
+	var x_new = clicks[clicks.length-1].diff;
+	var old_var = variance;
+
+	variance = (old_var + sqr(old_mean) - sqr(curr_mean))
+	           + (sqr(x_new) - old_var - sqr(old_mean))/(clicks.length-1);
+
+
+
+    }
+	bpm = ((clicks.length/(clicks[clicks.length-1].since))*60000)/4;
 	$("#bpm").html("BPM: " + bpm);
-	$("#clicks").text("Clicks: "+ clicks);
+	$("#clicks").text("Clicks: "+ clicks.length);
+	$("#UR").text("UR: " + (Math.sqrt(variance)*10));
+	$("#mean").text("Mean: "+clicks[clicks.length-1].mean);
+	$("#currdiff").text("Currdiff: "+clicks[clicks.length-1].diff);
+}
+
+function clickTime(a, b, c) {
+	this.since = a;
+	this.diff = b;
+	this.mean = c;
 }
 
 function tap() {
-	if (clicks === 0) {
+	if (clicks.length === 0) {
+		startTime = $.now();
+		var ct = new clickTime(0,0,0);
+		clicks.push(ct);
 		timer();
-	}
-	if (clicks < targetClicks) {
-		clicks++;
+		results();
+		return true;
+	} else if (clicks.length < targetClicks) {
+		var n = $.now();
+		var currDiff = (n - startTime) - (clicks[clicks.length-1]).since;
+		var ct = new clickTime(n - startTime,currDiff,currDiff);
+		clicks.push(ct);
 		results();
 	} else {
 		results();
@@ -132,8 +169,9 @@ function restart() {
 	$("#clicks").text("Clicks: ");
 	$("#ms").text("ms: ");
 	bpm = 0;
-	clicks = 0;
+	clicks = [];
 	ms = 0;
+	variance = 0;
 	targetClicks = $('.non').val();
 	$("#start").off();
 	$("#start").text("start");
@@ -145,7 +183,7 @@ function timer() {
 	time = setInterval(function(){
 		++ms;
 		$('#ms').text("ms: " + ms);
-		if (clicks >= targetClicks) {
+		if (clicks.length >= targetClicks) {
 			clearInterval(time);
 			$(document).off();
 		}
@@ -154,7 +192,13 @@ function timer() {
 }
 
 
-$('#start').on('click',ready);
+$('#start').on('click',function() {
+	if (buttonQueue.length === 0) {
+		alert('Please select at least 1 button');
+	} else {
+		ready();
+	}
+});
 
 }
 $(document).ready(main);
