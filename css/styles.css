@@ -82,3 +82,35 @@ input {
 .selection {
 	background-color: #fff200;
 	color: #333;
+}
+
+
+.acc-bar {
+	height:30px;
+	width:650px;
+	margin:0 auto;
+	background: #666;
+	position: relative;
+}
+
+.hit-50, .hit-100, .hit-300 {
+	position:absolute;
+	margin-left:auto;
+	margin-right:auto;
+	height:10px;
+}
+
+.hit-50 {
+	width:600px;
+	background: #fa0;
+}
+
+.hit-100 {
+	width:400px;
+	background: #0f0;
+}
+
+.hit-300 {
+	width:200px;
+	background: #0cf;
+}

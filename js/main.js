@@ -33,6 +33,12 @@ $m2.valid = false;
 $k1.valid = false;
 $k2.valid = false;
 
+$(document).on("contextmenu",function(e) {
+	if ($m2.valid) {
+		return false;
+	}
+});
+
 function mouseToggle(button) {
 	if ($.inArray(button,buttonQueue) === -1) {
 		addQueue(button);
@@ -41,6 +47,8 @@ function mouseToggle(button) {
 		removeQueue(button);
 	}
 }
+
+
 
 function keyToggle(button) {
 	if ($.inArray(button,buttonQueue) === -1) {
