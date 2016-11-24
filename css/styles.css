@@ -94,14 +94,26 @@ input {
 }
 
 .hit-50, .hit-100, .hit-300 {
-	position:absolute;
+	position: relative;
 	margin-left:auto;
 	margin-right:auto;
 	height:10px;
 }
 
+.hit-middle {
+	position:relative;
+	margin-left:auto;
+	margin-right:auto;
+	top: -30px;
+	height: 30px;
+	width: 5px;
+	background: #fff;
+
+}
+
 .hit-50 {
-	width:600px;
+	top:10px;
+	width:650px;
 	background: #fa0;
 }
 
@@ -111,6 +123,7 @@ input {
 }
 
 .hit-300 {
+	top:-10px;
 	width:200px;
 	background: #0cf;
 }

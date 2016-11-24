@@ -33,12 +33,6 @@ $m2.valid = false;
 $k1.valid = false;
 $k2.valid = false;
 
-$(document).on("contextmenu",function(e) {
-	if ($m2.valid) {
-		return false;
-	}
-});
-
 function mouseToggle(button) {
 	if ($.inArray(button,buttonQueue) === -1) {
 		addQueue(button);
@@ -141,6 +135,11 @@ var k1Event = 0;
 var k2Event = 0;
 var tries = 0;
 function ready() {
+	$(document).on("contextmenu",function(e) {
+	if ($m2.valid) {
+		return false;
+	}
+});
 	targetClicks = $(".non").val();
 	k1Down = $.Event( "keydown", { keyCode: $k1.key});
 	k2Down = $.Event( "keydown", { keycode: $k2.key});
@@ -202,7 +201,7 @@ function timer() {
 
 $('#start').on('click',function() {
 	if (buttonQueue.length === 0) {
-		alert('Please select at least 1 button');
+		alert('Please select at least 1 button and then press start.');
 	} else {
 		ready();
 	}
