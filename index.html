@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+
 <html>
 <head>
 <link rel='stylesheet' href='css/styles.css'>
@@ -15,8 +17,12 @@
 	<div class="k1-button">K1</div>
 	<div class="k2-button">K2</div>
 </div>
-  <br/>Number of notes<br/>
-  <input class="non" type="Number" name="non" value="29">
+  <br/>Number of notes
+  <input class="non" type="Number" name="non" value="29"><br />
+  Target BPM (optional)
+  <input class="tbpm" type="Number" name="tbpm" value="0"><br />
+  Offset (ms)
+  <input class="offset" type="Number" name="offset" value="0"><br />
 
 <p id="bpm">
 BPM:
@@ -35,14 +41,19 @@ UR:
 <br/>
 
 
-<!--
 <div class="acc-bar">
 	<div class="hit-50"></div>
 	 <div class="hit-100"></div>
 	<div class="hit-300"></div>
-	<div class="hit-middle"></div>
-</div>-->
+	<div class="hit-middle-triangle"></div>
+    <div class="hit-middle"></div>
+</div>
+<br />
 
+<!-- 
+<p id="debug">Since: </p>
+<canvas id="hit-window"></canvas>
+-->
 
 <script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
 <script src = 'js/keytostring.js'></script>

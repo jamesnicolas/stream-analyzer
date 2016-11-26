@@ -111,7 +111,20 @@ function clickTime(a, b, c) {
 	this.diff = b;
 	this.mean = c;
 }
+var isCustomBPM = false;
 
+function plot(x) {
+
+
+
+	if (isCustomBPM) {
+
+	    var coords = 650*((x  + 30000/(customBPM*4)) % (60000/(customBPM*4)))/(60000/(customBPM*4));
+
+	    $(".hit-middle").after("<div class=\"hit\" style='margin-left:"+ coords +"px' </div>");
+	    $("#debug").append(" "+x);
+    }
+}
 function tap() {
 	if (clicks.length === 0) {
 		startTime = $.now();
@@ -119,12 +132,14 @@ function tap() {
 		clicks.push(ct);
 		timer();
 		results();
+		plot(ct.since);
 		return true;
 	} else if (clicks.length < targetClicks) {
 		var n = $.now();
 		var currDiff = (n - startTime) - (clicks[clicks.length-1]).since;
 		var ct = new clickTime(n - startTime,currDiff,currDiff);
 		clicks.push(ct);
+		plot(ct.since);
 		results();
 	} else {
 		results();
@@ -135,6 +150,13 @@ var k1Event = 0;
 var k2Event = 0;
 var tries = 0;
 function ready() {
+	if ($(".tbpm").val) {
+		isCustomBPM = true;
+		customBPM = $(".tbpm").val();
+	} else {
+		isCustomBPM = false;
+	}
+
 	$(document).on("contextmenu",function(e) {
 	if ($m2.valid) {
 		return false;
@@ -172,6 +194,7 @@ function restart() {
 	$(document).off();
 	clearInterval(time);
 	time = 0;
+	$(".hit").remove();
 	$("#bpm").html("BPM: ");
 	$("#clicks").text("Clicks: ");
 	$("#ms").text("ms: ");
@@ -182,6 +205,7 @@ function restart() {
 	targetClicks = $('.non').val();
 	$("#start").off();
 	$("#start").text("start");
+	$("#debug").text("Since: ");
 	ready();
 }
 function timer() {
