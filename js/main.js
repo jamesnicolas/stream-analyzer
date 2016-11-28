@@ -106,25 +106,30 @@ function results() {
 	$("#currdiff").text("Currdiff: "+clicks[clicks.length-1].diff);
 }
 
-function clickTime(a, b, c) {
+function clickTime(a, b, c, d) {
 	this.since = a;
 	this.diff = b;
 	this.mean = c;
+	this.accPos = d;
 }
 var isCustomBPM = false;
 
+var notePos = 0;
 function plot(x) {
 
-
+	var mspc = 60000/(4*customBPM);
 
 	if (isCustomBPM) {
+		var coords = (x-notePos)*2 + 200;
+		if (coords >= 0 && coords <= 400) {
+			$(".hit-middle").after("<div class=\"hit\" style='margin-left:"+ coords +"px' </div>");
+		}
+		notePos += mspc;
 
-	    var coords = 650*((x  + 30000/(customBPM*4)) % (60000/(customBPM*4)))/(60000/(customBPM*4));
+	}
 
-	    $(".hit-middle").after("<div class=\"hit\" style='margin-left:"+ coords +"px' </div>");
-	    $("#debug").append(" "+x);
-    }
 }
+
 function tap() {
 	if (clicks.length === 0) {
 		startTime = $.now();
@@ -150,6 +155,7 @@ var ms = 0;
 var k1Event = 0;
 var k2Event = 0;
 var tries = 0;
+var hs = new Audio("drum-hitclap.wav");
 function ready() {
 	if ($(".tbpm").val) {
 		isCustomBPM = true;
@@ -189,6 +195,9 @@ function ready() {
 		var mspb = 60000/customBPM;
 		var beat = -1;
 		metronome = setInterval(function() {
+			hs.play();
+			hs.currentTime = 0;
+
 			++beat;
 			beat %= 4;
 			$(".beat"+beat).fadeTo(0,1, function() {
@@ -201,6 +210,7 @@ function ready() {
 }
 var time = 0;
 function restart() {
+	notePos = 0;
 	tries++;
 	if (tries >= 2) {
 		$('.retries').text(""+tries+" retries and counting...");
