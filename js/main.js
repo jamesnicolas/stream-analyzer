@@ -145,6 +145,7 @@ function tap() {
 		results();
 	}
 }
+var metronome;
 var ms = 0;
 var k1Event = 0;
 var k2Event = 0;
@@ -183,6 +184,20 @@ function ready() {
 	$('#start').off();
 	$('#start').text("restart");
 	$('#start').on('click',restart);
+
+		if (isCustomBPM) {
+		var mspb = 60000/customBPM;
+		var beat = -1;
+		metronome = setInterval(function() {
+			++beat;
+			beat %= 4;
+			$(".beat"+beat).fadeTo(0,1, function() {
+				$(".beat"+beat).fadeTo(mspb,0);
+			});
+
+
+		},mspb);
+	}
 }
 var time = 0;
 function restart() {
@@ -206,9 +221,12 @@ function restart() {
 	$("#start").off();
 	$("#start").text("start");
 	$("#debug").text("Since: ");
+	clearInterval(metronome);
 	ready();
 }
 function timer() {
+
+
 	$('.start-prompt').hide();
 	time = 0;
 	time = setInterval(function(){
@@ -216,6 +234,7 @@ function timer() {
 		$('#ms').text("ms: " + ms);
 		if (clicks.length >= targetClicks) {
 			clearInterval(time);
+			clearInterval(metronome);
 			$(document).off();
 		}
 	},10);
