@@ -155,7 +155,7 @@ var ms = 0;
 var k1Event = 0;
 var k2Event = 0;
 var tries = 0;
-var hs = new Audio("drum-hitclap.wav");
+
 function ready() {
 	if ($(".tbpm").val) {
 		isCustomBPM = true;
@@ -195,8 +195,6 @@ function ready() {
 		var mspb = 60000/customBPM;
 		var beat = -1;
 		metronome = setInterval(function() {
-			hs.play();
-			hs.currentTime = 0;
 
 			++beat;
 			beat %= 4;
